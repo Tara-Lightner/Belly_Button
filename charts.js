@@ -90,6 +90,7 @@ function buildCharts(sample) {
         y: yticks,
         type: "bar",
         orientation: "h",
+        marker: {color: "green"}
       },
     ];
     // 9. Create the layout for the bar chart.
@@ -98,7 +99,63 @@ function buildCharts(sample) {
     Plotly.newPlot("bar", barData, barLayout);
 
     // Start Bubble Chart here. (lines 11-22)
+    // 1. Create the trace for the bubble chart.
+    var bubbleData = [
+      {
+        x: otu_ids,
+        y: sample_values,
+        text:  otu_labels,
+        mode: 'markers',
+        marker: {
+          size: sample_values,
+          color: otu_ids,
+          colorscale:  "Earth"
+        }
+      }
+    ];
 
+    // 2. Create the layout for the bubble chart.
+    var bubbleLayout = {
+      title:  "Total Bacteria Cultures per Sample",
+      hovermode:  "closest",
+      xaxis:  {title:  "OTU ID"}
+    };
+
+    // 3. Use Plotly to plot the data with the layout.
+    Plotly.newPlot("bubble", bubbleData, bubbleLayout); 
+    
+    
     // Start Guage Chart here. (lines 33-44)
+       // 4. Create the trace for the gauge chart.
+       var gaugeData = [
+        {
+          domain: { x: [0, 1], y: [0, 1] },
+          value: wfreq,
+          title: { text: "<b>Belly Button Wash Frequency</b><br>(scrubs per week)"},
+          type: "indicator",
+          mode: "gauge+number",
+          gauge: {
+            axis: { range: [null, 10] },
+            bar: { color: "black"},
+            steps: [
+              { range: [0, 2], color: "red" },
+              { range: [2, 4], color: "orange" },
+              { range: [4, 6], color: "yellow" },
+              { range: [6, 8], color: "green" },
+              { range: [8, 10], color: "blue" }
+            ],
+          }
+        }
+      ];
+      
+      // 5. Create the layout for the gauge chart.
+      var gaugeLayout = { 
+        width: 500,
+        height: 425
+       
+      };
+  
+      // 6. Use Plotly to plot the gauge data and layout.
+      Plotly.newPlot("gauge", gaugeData, gaugeLayout);
   });
 }
